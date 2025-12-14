@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit">Generate Resep</button>
     </form>
     <hr>
-    <h3>Hasil Resep:</h3>
+    <h3>Hasil Rekomendasi Resep:</h3>
     <pre><?php echo htmlspecialchars($resultText); ?></pre>
 </body>
 </html>
