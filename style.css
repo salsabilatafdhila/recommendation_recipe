@@ -1,0 +1,252 @@
+/* File: style.css - Gaya aesthetic Pinterest (Pink & Kuning Emas) */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+:root {
+    /* Skema Warna Pink & Kuning Emas (Aksen) */
+    --pink-light: #FFC0CB; /* Pink Ceria */
+    --pink-dark: #FF69B4; /* Hot Pink */
+    --pink-bg: #FFE4E1; /* Misty Rose, Background halus */
+    
+    --accent-yellow: #FFC72C; /* Kuning Emas/Mustard */
+    --accent-dark: #C9961A;   /* Kuning yang lebih gelap */
+
+    --text-dark: #333;
+    --text-light: #FFF;
+    --shadow-subtle: 0 4px 10px rgba(0, 0, 0, 0.08); /* Bayangan lebih halus */
+    --shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.15); /* Bayangan sedang */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--pink-bg); /* Latar belakang pink halus */
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0; /* Padding dihapus dari body, ditangani oleh main-wrapper */
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.main-wrapper {
+    width: 100%;
+    max-width: 1200px; /* Tampilan lebar */
+    padding: 0 20px 20px 20px; /* Padding di sekitar konten utama */
+}
+
+/* --- Navigasi ala Pinterest --- */
+.navbar {
+    background-color: var(--text-light); /* Navbar putih */
+    padding: 15px 30px; /* Padding lebih besar */
+    border-bottom: 1px solid #eee; /* Garis bawah halus */
+    margin: 0 -20px 30px -20px; /* Menutupi padding main-wrapper agar full width */
+    box-shadow: var(--shadow-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky; /* Sticky navbar */
+    top: 0;
+    z-index: 1000;
+    border-radius: 0 0 15px 15px; /* Sedikit rounded di bawah */
+}
+
+.navbar-brand {
+    color: var(--pink-dark); /* Brand dengan warna pink gelap */
+    font-size: 1.8em;
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar-menu a {
+    color: var(--text-dark); /* Teks menu gelap */
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 20px; /* Tombol menu rounded */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-menu a:hover {
+    background-color: var(--pink-light); /* Hover menjadi pink muda */
+    color: var(--pink-dark);
+}
+
+/* --- Judul Halaman --- */
+.page-title {
+    color: var(--pink-dark);
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 800;
+    font-size: 2.8em;
+    letter-spacing: 1px;
+}
+
+/* ---------------------------------------------------- */
+/* --- Pinterest Grid Layout --- */
+/* ---------------------------------------------------- */
+
+.pinterest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Kolom adaptif */
+    gap: 30px; /* Jarak antar card */
+    margin-bottom: 40px;
+}
+
+.grid-item {
+    display: flex; /* Untuk memastikan konten mengisi card */
+    flex-direction: column;
+}
+
+.card {
+    background-color: var(--text-light); /* Latar belakang card putih */
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium); /* Bayangan card sedang */
+    padding: 25px;
+    height: 100%; /* Penting agar card setinggi mungkin */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    color: var(--pink-dark);
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* --- Form Card --- */
+.form-card form {
+    display: grid;
+    gap: 20px;
+    flex-grow: 1; /* Agar form mengisi sisa ruang di card */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dark); /* Label teks gelap */
+    font-size: 1.05em;
+}
+
+textarea, input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--pink-light); /* Border pink muda */
+    border-radius: 8px;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    background-color: #fcfcfc; /* Sedikit off-white */
+}
+textarea:focus, input[type="file"]:focus {
+    outline: none;
+    border-color: var(--accent-yellow); /* Focus dengan aksen kuning */
+    box-shadow: 0 0 0 3px rgba(255, 199, 44, 0.3);
+}
+
+
+/* --- Button --- */
+button {
+    background-color: var(--accent-yellow); /* Tombol Kuning Emas */
+    color: var(--text-dark);
+    padding: 15px 25px;
+    border: none;
+    border-radius: 30px; /* Sedikit lebih kecil dari 50px */
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(255, 199, 44, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: auto; /* Penting: Dorong tombol ke bawah card */
+}
+
+button:hover {
+    background-color: var(--pink-dark); /* Hover ke pink gelap */
+    color: var(--text-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 105, 180, 0.5);
+}
+
+/* --- Result Card --- */
+.recipe-output {
+    background-color: var(--pink-bg); /* Latar belakang hasil resep pink halus */
+    padding: 25px;
+    border-radius: 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 1em;
+    line-height: 1.7;
+    color: var(--text-dark);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-grow: 1; /* Agar mengisi sisa ruang di card */
+}
+
+
+/* --- Error Message --- */
+.error-message {
+    background-color: #FFD2D2;
+    color: #D8000C;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #D8000C;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 800px; /* Batasi lebar pesan error */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Media Queries for Responsiveness --- */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+    }
+    .navbar-menu {
+        margin-top: 15px;
+    }
+    .page-title {
+        font-size: 2em;
+        margin-bottom: 30px;
+    }
+    .pinterest-grid {
+        grid-template-columns: 1fr; /* Satu kolom untuk mobile */
+        gap: 20px;
+    }
+    .main-wrapper {
+        padding: 0 15px 15px 15px;
+    }
+    .card {
+        padding: 20px;
+    }
+    .card-title {
+        font-size: 1.5em;
+    }
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}
