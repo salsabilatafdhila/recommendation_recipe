@@ -68,18 +68,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html>
-<head><title>Gemini Recipe Generator</title></head>
+<head>
+    <title>✨ Resep AI Pinterest-Style</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
 <body>
-    <h1>Generator Resep AI</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <label>Masukkan Bahan:</label><br>
-        <textarea name="bahan"></textarea><br>
-        <label>Atau Upload Foto Bahan:</label><br>
-        <input type="file" name="image"><br><br>
-        <button type="submit">Generate Resep</button>
-    </form>
-    <hr>
-    <h3>Hasil Resep:</h3>
-    <pre><?php echo htmlspecialchars($resultText); ?></pre>
-</body>
+    <div class="main-wrapper">
+        <nav class="navbar">
+            <a href="index.php" class="navbar-brand">✨ Resepku</a>
+            
+            <div class="navbar-menu">
+                <a href="index.php">🏠 Beranda</a>
+                <a href="about.php">💖 Tentang Kami</a>
+                <a href="faq.php">💡 Bantuan/FAQ</a>
+            </div>
+        </nav>
+        
+        <h1 class="page-title">Inspirasi Resep Harian Anda</h1>
+
+
+        <div class="pinterest-grid">
+            <div class="grid-item card form-card">
+                <h2 class="card-title">Cari Resep Baru</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label for="bahan">🍳 Masukkan Bahan Utama:</label>
+                        <textarea name="bahan" id="bahan" placeholder="Contoh: Ayam, Nasi, Telur..."><?php echo htmlspecialchars($bahan ?? ''); ?></textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="image">📸 Atau Unggah Foto:</label>
+                        <input type="file" name="image" id="image" accept="image/*">
+                    </div>
+
+                    <button type="submit">
+                        <span>🪄</span> Temukan Resep
+                    </button>
+                </form>
+            </div>
+            
+            <div class="grid-item card result-card">
+                <h2 class="card-title">Hasil Resep Kreatif</h2>
+                <pre class="recipe-output"><?php echo htmlspecialchars($resultText ?: "Resep akan muncul di sini setelah Anda mencari."); ?></pre>
+            </div>
+        </div>
+    </div> </body>
 </html>
