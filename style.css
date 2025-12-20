@@ -250,3 +250,319 @@ button:hover {
         font-size: 1em;
     }
 }
+
+/* --- Carousel Gambar Responsif & Bisa Digulir --- */
+.image-carousel {
+    display: block; /* Menggunakan block agar white-space bekerja */
+    overflow-x: auto; /* Mengaktifkan gulir horizontal */
+    overflow-y: hidden;
+    white-space: nowrap; /* Mencegah gambar turun ke baris baru */
+    padding: 15px 5px;
+    gap: 15px;
+    scroll-snap-type: x mandatory; /* Membuat gambar "menempel" saat digulir */
+    -webkit-overflow-scrolling: touch; /* Gulir halus di iOS/Safari */
+}
+
+/* Sembunyikan Scrollbar agar terlihat bersih ala Pinterest */
+.image-carousel::-webkit-scrollbar {
+    height: 0px;
+    display: none;
+}
+
+.carousel-item {
+    display: inline-block; /* Penting agar tetap sejajar horizontal */
+    width: 280px; /* Lebar standar desktop */
+    height: 200px;
+    margin-right: 15px;
+    border-radius: 20px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    box-shadow: var(--shadow-subtle);
+    border: 4px solid var(--text-light);
+    background-color: #eee;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Penyesuaian Perangkat (Mobile & Tablet) --- */
+@media (max-width: 768px) {
+    .carousel-item {
+        width: 200px; /* Lebar lebih kecil untuk HP */
+        height: 150px;
+    }
+    
+    .page-title {
+        font-size: 2em;
+        margin-bottom: 20px;
+    }
+
+    .navbar-brand {
+        font-size: 1.4em;
+    }
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer; /* Penting agar terlihat bisa diklik */
+    padding: 10px 18px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none; /* Sembunyikan default */
+    position: absolute;
+    background-color: white;
+    min-width: 180px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    z-index: 999;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: var(--text-dark);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--pink-bg);
+    color: var(--pink-dark);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Tampilkan saat di-hover */
+}
+
+/* --- GAYA BARU FAQ ACCORDION (Dropdown Pertanyaan) --- */
+.faq-container {
+    max-width: 800px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.faq-card {
+    padding: 5px 20px; /* Padding lebih tipis karena accordion */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-card:hover {
+    box-shadow: 0 6px 15px rgba(255, 105, 180, 0.2);
+    transform: translateY(-2px);
+}
+
+details {
+    width: 100%;
+}
+
+summary {
+    list-style: none; /* Hilangkan panah default browser */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5px;
+    font-weight: 700;
+    font-size: 1.1em;
+    color: var(--pink-dark);
+    outline: none;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+.arrow {
+    transition: transform 0.3s;
+    font-size: 0.8em;
+    color: var(--accent-dark);
+}
+
+/* Putar panah saat dibuka */
+details[open] summary .arrow {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding-bottom: 20px;
+    color: var(--text-dark);
+    line-height: 1.6;
+    border-top: 1px solid #eee;
+    margin-top: 5px;
+    padding-top: 10px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsif untuk Mobile */
+@media (max-width: 768px) {
+    .dropdown {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .dropdown-content {
+        position: relative;
+        box-shadow: none;
+        border: 1px solid #eee;
+        transform: none;
+        left: 0;
+        width: 100%;
+    }
+}
+
+/* --- SECTION TITLE --- */
+.section-title {
+    text-align: center;
+    color: var(--pink-dark);
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+/* --- REVIEW CAROUSEL CONTAINER --- */
+.review-wrapper {
+    width: 100%;
+    overflow: hidden; /* Menyembunyikan card yang keluar jalur */
+    position: relative;
+    padding: 20px 0;
+}
+
+.review-track {
+    display: flex;
+    gap: 20px;
+    width: max-content; /* Lebar mengikuti isi konten */
+    /* ANIMASI: Menggulir selama 20 detik secara linear (konstan) */
+    animation: scrollLeft 25s linear infinite; 
+}
+
+/* Saat mouse diarahkan, animasi berhenti (opsional, biar user bisa baca) */
+.review-track:hover {
+    animation-play-state: paused;
+}
+
+/* KEYFRAMES ANIMASI BERGERAK */
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Geser ke kiri sejauh setengah panjang track (karena ada duplikat) */
+        transform: translateX(-50%); 
+    }
+}
+
+/* --- REVIEW CARD STYLE (Mirip Hostinger) --- */
+.review-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    width: 350px; /* Lebar tetap agar rapi */
+    flex-shrink: 0; /* Agar card tidak mengecil */
+    box-shadow: var(--shadow-subtle);
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.review-header {
+    margin-bottom: 15px;
+}
+
+.review-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--pink-bg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+}
+
+.review-text {
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-style: italic;
+    flex-grow: 1;
+}
+
+/* --- TAGS (Pills) --- */
+.review-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.review-tags span {
+    background-color: #f0f0f0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: #666;
+}
+
+/* --- PROFILE & STARS SECTION --- */
+.reviewer-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.reviewer-info {
+    flex-grow: 1; /* Mendorong bintang ke kanan jika mau, atau tetap rapat */
+}
+
+.reviewer-info h4 {
+    margin: 0;
+    font-size: 0.95em;
+    color: var(--text-dark);
+}
+
+.reviewer-info p {
+    margin: 0;
+    font-size: 0.8em;
+    color: #888;
+}
+
+/* BINTANG DI SAMPING FOTO/NAMA */
+.stars {
+    color: var(--accent-yellow); /* Warna Kuning Emas */
+    font-size: 1.1em;
+    letter-spacing: 2px;
+}

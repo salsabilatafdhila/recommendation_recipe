@@ -136,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             <div class="navbar-menu">
                 <a href="index.php">🏠 Beranda</a>
-                <a href="#">💖 Tentang Kami</a>
-                <a href="#">💡 Bantuan/FAQ</a>
+                <a href="about.php">💖 Tentang Kami</a>
+                <a href="faq.php">💡 Bantuan/FAQ</a>
             </div>
         </nav>
         
