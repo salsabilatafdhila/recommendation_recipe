@@ -138,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a href="index.php">🏠 Beranda</a>
                 <a href="about.php">💖 Tentang Kami</a>
                 <a href="faq.php">💡 Bantuan/FAQ</a>
+                <a href="profile.php">👤 Profil</a>
             </div>
         </nav>
         
