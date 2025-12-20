@@ -171,10 +171,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             
             <div class="grid-item card result-card">
-                <h2 class="card-title">Hasil Resep Kreatif</h2>
-                <pre class="recipe-output"><?php echo htmlspecialchars($resultText ?: "Resep akan muncul di sini setelah Anda mencari."); ?></pre>
-            </div>
+    <h2 class="card-title">Hasil Resep Kreatif</h2>
+    
+    <pre class="recipe-output"><?php echo htmlspecialchars($resultText ?: "Resep akan muncul di sini setelah Anda mencari."); ?></pre>
+
+    <?php if (!empty($resultText) && $resultText != "Mohon isi bahan atau upload gambar." && $resultText != "Resep akan muncul di sini setelah Anda mencari."): ?>
+        <div class="share-section" style="margin-top: 20px; padding-top: 15px; border-top: 2px dashed var(--pink-light);">
+            <form action="share.php" method="POST">
+                <input type="hidden" name="resep" value="<?php echo htmlspecialchars($resultText); ?>">
+                
+                <button type="submit" class="btn-share-trigger">
+                    📤 Bagikan ke WhatsApp / Instagram
+                </button>
+            </form>
         </div>
-    </div> 
-</body>
-</html>
+    <?php endif; ?>
+</div>
