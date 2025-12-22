@@ -7,16 +7,29 @@ class FileTypeTest extends TestCase
     public function testFileIndexExists()
     {
         $this->assertFileExists('index.php', "File index.php harus ada");
+        $this->assertFileExists('share.php',  "File share.php harus ada");
+        $this->assertFileExists('profil.php', "File profil.php harus ada");
+        $this->assertFileExists('tentang.php',"File tentang.php harus ada");
+        $this->assertFileExists('faq.php',"File faq.php harus ada");
     }
 
     // 2. Test Case: Valid Syntax 
     public function testIndexSyntax()
     {
-        // Mengecek sintaks PHP menggunakan command line linter
-        $output = shell_exec('php -l index.php');
-        $this->assertStringContainsString('No syntax errors', $output, "Sintaks PHP error");
-    }
+    // Mengecek sintaks PHP menggunakan command line linter
+    $outputIndex  = shell_exec('php -l index.php');
+    $outputShare  = shell_exec('php -l share.php');
+    $outputProfil = shell_exec('php -l profil.php');
+    $outputTentang = shell_exec('php -l tentang.php');
+    $outputFaq = shell_exec('php -l faq.php');
 
+    $this->assertStringContainsString('No syntax errors', $outputIndex,  "Sintaks PHP index.php error");
+    $this->assertStringContainsString('No syntax errors', $outputShare,  "Sintaks PHP share.php error");
+    $this->assertStringContainsString('No syntax errors', $outputProfil, "Sintaks PHP profil.php error");
+    $this->assertStringContainsString('No syntax errors', $outputTentang, "Sintaks PHP tentang.php error");
+    $this->assertStringContainsString('No syntax errors', $outputFaq, "Sintaks PHP faq.php error");
+    }
+    
     // 3. Test Case: API Key tidak boleh kosong 
     public function testApiKeyNotEmpty()
     {
