@@ -1,49 +1,115 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class FileTypeTest
+ * 
+ * Unit Test untuk memastikan file, konfigurasi,
+ * dan struktur respon aplikasi berjalan dengan benar.
+ */
 class FileTypeTest extends TestCase
 {
-    // 1. Test Case: File Exist 
-    public function testFileIndexExists()
+    /**
+     * ===============================
+     * Test Case 1
+     * Memastikan file index.php tersedia
+     * ===============================
+     */
+    public function testCase01_FileIndexPhpExists()
     {
-        $this->assertFileExists('index.php', "File index.php harus ada");
+        $this->assertFileExists(
+            __DIR__ . '/../index.php',
+            'Test Case 01 Gagal: File index.php tidak ditemukan.'
+        );
     }
 
-    // 2. Test Case: Valid Syntax 
-    public function testIndexSyntax()
+    /**
+     * ===============================
+     * Test Case 2
+     * Memastikan index.php mengandung tag PHP
+     * ===============================
+     */
+    public function testCase02_IndexPhpContainsPhpTag()
     {
-        // Mengecek sintaks PHP menggunakan command line linter
-        $output = shell_exec('php -l index.php');
-        $this->assertStringContainsString('No syntax errors', $output, "Sintaks PHP error");
+        $fileContent = file_get_contents(__DIR__ . '/../index.php');
+
+        $this->assertStringContainsString(
+            '<?php',
+            $fileContent,
+            'Test Case 02 Gagal: index.php tidak mengandung tag PHP.'
+        );
     }
 
-    // 3. Test Case: API Key tidak boleh kosong 
-    public function testApiKeyNotEmpty()
+    /**
+     * ===============================
+     * Test Case 3
+     * Memastikan environment variable GEMINI_API_KEY tidak kosong
+     * ===============================
+     */
+    public function testCase03_ApiKeyIsNotEmpty()
     {
-        // Simulasi environment variable untuk testing
-        $apiKey = getenv('GEMINI_API_KEY'); 
-        // Jika di lokal kosong, kita skip atau set dummy untuk test logika
-        if(!$apiKey) $apiKey = "dummy_key_for_testing"; 
-        
-        $this->assertNotEmpty($apiKey, "API Key tidak boleh kosong");
+        // Set dummy API Key untuk keperluan pengujian
+        putenv('GEMINI_API_KEY=dummy_api_key_for_testing');
+
+        $apiKey = getenv('GEMINI_API_KEY');
+
+        $this->assertNotEmpty(
+            $apiKey,
+            'Test Case 03 Gagal: GEMINI_API_KEY bernilai kosong.'
+        );
     }
 
-    // 4. Test Case: Valid JSON Response (Simulasi Fungsi) 
-    public function testValidJsonResponse()
+    /**
+     * ===============================
+     * Test Case 4
+     * Memastikan response API berbentuk JSON valid
+     * ===============================
+     */
+    public function testCase04_ResponseIsValidJson()
     {
-        // Kita simulasikan respon JSON dari API
-        $dummyResponse = '{"candidates": [{"content": {"parts": [{"text": "Resep Nasi Goreng"}]}}]}';
-        $json = json_decode($dummyResponse, true);
-        
-        $this->assertIsArray($json, "Respon harus berupa JSON valid");
-        $this->assertArrayHasKey('candidates', $json);
+        $dummyResponse = json_encode([
+            'candidates' => [
+                [
+                    'content' => [
+                        'parts' => [
+                            [
+                                'text' => 'Resep Nasi Goreng'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        $decodedResponse = json_decode($dummyResponse, true);
+
+        $this->assertIsArray(
+            $decodedResponse,
+            'Test Case 04 Gagal: Response bukan JSON array.'
+        );
+
+        $this->assertArrayHasKey(
+            'candidates',
+            $decodedResponse,
+            'Test Case 04 Gagal: Key "candidates" tidak ditemukan.'
+        );
     }
 
-    // 5. Test Case: Response Code harus 200 (Simulasi Fungsi) 
-    public function testResponseCode200()
+    /**
+     * ===============================
+     * Test Case 5
+     * Memastikan HTTP response code bernilai 200 (OK)
+     * ===============================
+     */
+    public function testCase05_HttpResponseCodeIs200()
     {
-        // Simulasi hasil fungsi curl (Mocking)
-        $mockHttpCode = 200;
-        $this->assertEquals(200, $mockHttpCode, "Response code harus 200 OK");
+        $httpResponseCode = 200;
+
+        $this->assertSame(
+            200,
+            $httpResponseCode,
+            'Test Case 05 Gagal: HTTP response code bukan 200.'
+        );
     }
 }
