@@ -86,7 +86,70 @@ body {
     font-size: 2.8em;
     letter-spacing: 1px;
 }
+/* --- PERBAIKAN AKHIR STYLE ACCORDION --- */
 
+/* Panah menghadap ke BAWAH saat tertutup (Default) */
+.arrow-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    transform: rotate(180deg); 
+    font-size: 0.8em;
+    color: var(--pink-dark);
+}
+
+/* Panah berputar ke ATAS saat dropdown terbuka */
+.recipe-accordion[open] .arrow-icon {
+    transform: rotate(0deg); 
+}
+
+/* Kotak Kuning List */
+.recipe-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.yellow-box {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-yellow);
+    margin-top: 7px;
+    flex-shrink: 0;
+    border-radius: 2px;
+}
+
+/* Konten di dalam dropdown */
+.accordion-content {
+    padding: 15px 20px;
+    border-top: 1px solid var(--pink-light);
+    background-color: #ffffff;
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Judul Dropdown */
+.recipe-accordion summary {
+    padding: 15px 20px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--pink-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fffafb;
+    list-style: none;
+}
+
+.recipe-accordion summary::-webkit-details-marker {
+    display: none;
+}
 /* ---------------------------------------------------- */
 /* --- Pinterest Grid Layout --- */
 /* ---------------------------------------------------- */

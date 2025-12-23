@@ -172,7 +172,83 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
             <div class="grid-item card result-card">
     <h2 class="card-title">Hasil Resep Kreatif</h2>
-    
+
+    <div class="recipe-output-rich">
+        <?php 
+        // 1. Standarisasi format Markdown (Bold & Italic)
+        $text = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $resultText);
+        $text = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $text);
+        
+        $lines = explode("\n", $text);
+        $inAccordion = false;
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (empty($line) || $line == '---' || $line == '.') continue;
+
+            $plainLine = strip_tags($line);
+            $lowerLine = strtolower($plainLine);
+
+            // 2. LOGIKA DETEKSI DROPDOWN UTAMA (Sangat Fleksibel)
+            $isMainHeader = false;
+            $headerTitle = '';
+
+            // Deteksi SEKSI BAHAN (Mencakup: Bahan Utama, Daftar Bahan, dll)
+            if (preg_match('/^#*\s*bahan/i', $lowerLine) && !strpos($lowerLine, 'pelengkap')) {
+                $isMainHeader = true;
+                $headerTitle = 'Bahan-bahan';
+            } 
+            // Deteksi SEKSI CARA/LANGKAH (Mencakup: Cara Membuat, Instruksi, Langkah-langkah)
+            elseif (preg_match('/^#*\s*(cara|langkah|instruksi)/i', $lowerLine)) {
+                $isMainHeader = true;
+                $headerTitle = 'Cara Membuat & Langkah Memasak';
+            } 
+            // Deteksi SEKSI TIPS/VARIASI
+            elseif (preg_match('/^#*\s*(tips|variasi|saran|tambahan)/i', $lowerLine)) {
+                $isMainHeader = true;
+                $headerTitle = 'Tips & Variasi';
+            }
+
+            // 3. EKSEKUSI PEMBUATAN DROPDOWN
+            if ($isMainHeader) {
+                if ($inAccordion) echo "</div></details>";
+                echo "<details class='recipe-accordion'> 
+                        <summary>" . $headerTitle . " <span class='arrow-icon'>▲</span></summary>
+                        <div class='accordion-content'>";
+                $inAccordion = true;
+                continue;
+            }
+
+            // 4. JUDUL UTAMA (Nama Masakan)
+            if (strpos($line, '##') === 0) {
+                if ($inAccordion) { echo "</div></details>"; $inAccordion = false; }
+                $displayTitle = trim(str_replace('##', '', $line));
+                echo "<h3 class='recipe-main-title'>" . $displayTitle . "</h3>";
+                continue;
+            }
+
+            // 5. LOGIKA LIST ITEM (Poin-poin dengan kotak kuning)
+            // Menangkap baris yang diawali angka (1. 2.) atau simbol (* - •)
+            if (preg_match('/^(\d+[\.\)]|[\*\-\•])/', $plainLine)) {
+                // Bersihkan angka atau simbol di awal agar tampilan kotak kuning bersih
+                $cleanItem = preg_replace('/^(\d+[\.\)]|[\*\-\•])\s*/', '', $line);
+                echo "<div class='recipe-list-item'><span class='yellow-box'></span> " . $cleanItem . "</div>";
+            } 
+            // 6. PENANGANAN SUB-JUDUL DI DALAM DROPDOWN (Misal: A. Bahan Utama, 1. Marinasi Ayam)
+            // Kita paksa tetap jadi teks tebal pink agar tidak pecah dropdown-nya
+            elseif (preg_match('/^[A-Z]\./i', $plainLine) || (strpos($line, '<strong>') !== false && strpos($line, ':') !== false)) {
+                echo "<p style='margin: 15px 0 5px 0; font-weight: 800; color: var(--pink-dark); text-decoration: underline;'>" . $line . "</p>";
+            }
+            // 7. TEKS DESKRIPSI BIASA
+            else {
+                echo "<p class='recipe-text'>" . $line . "</p>";
+            }
+        }
+
+        if ($inAccordion) echo "</div></details>";
+        ?>
+    </div>
+
     <pre class="recipe-output"><?php echo htmlspecialchars($resultText ?: "Resep akan muncul di sini setelah Anda mencari."); ?></pre>
 
     <?php if (!empty($resultText) && $resultText != "Mohon isi bahan atau upload gambar." && $resultText != "Resep akan muncul di sini setelah Anda mencari."): ?>
