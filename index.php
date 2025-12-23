@@ -141,49 +141,97 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a href="profile.php">👤 Profil</a>
             </div>
         </nav>
-        
-        <h1 class="page-title">Inspirasi Resep Harian Anda</h1>
-        
+                
         <?php if ($error): ?>
             <div class="error-message">
                 🚨 *Perhatian:* <?php echo htmlspecialchars($error); ?>
             </div>
         <?php endif; ?>
 
-        <div class="pinterest-grid">
-            <div class="grid-item card form-card">
-                <h2 class="card-title">Cari Resep Baru</h2>
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="input-group">
-                        <label for="bahan">🍳 Masukkan Bahan Utama:</label>
-                        <textarea name="bahan" id="bahan" placeholder="Contoh: Ayam, Nasi, Telur..."><?php echo htmlspecialchars($bahan); ?></textarea>
-                    </div>
-                    
-                    <div class="input-group">
-                        <label for="image">📸 Atau Unggah Foto Bahan:</label>
-                        <input type="file" name="image" id="image" accept="image/*">
-                    </div>
+<div class="main-wrapper">
+    <h1 class="page-title">Inspirasi Resep Harian Anda</h1>
 
-                    <button type="submit">
-                        <span>🪄</span> Generate Resep
-                    </button>
-                </form>
-            </div>
-            
-            <div class="grid-item card result-card">
-    <h2 class="card-title">Hasil Resep Kreatif</h2>
-    
-    <pre class="recipe-output"><?php echo htmlspecialchars($resultText ?: "Resep akan muncul di sini setelah Anda mencari."); ?></pre>
-
-    <?php if (!empty($resultText) && $resultText != "Mohon isi bahan atau upload gambar." && $resultText != "Resep akan muncul di sini setelah Anda mencari."): ?>
-        <div class="share-section" style="margin-top: 20px; padding-top: 15px; border-top: 2px dashed var(--pink-light);">
-            <form action="share.php" method="POST">
-                <input type="hidden" name="resep" value="<?php echo htmlspecialchars($resultText); ?>">
+    <div class="recipe-container">
+        <div class="card form-card">
+            <h2 class="card-title">Cari Resep Baru</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="input-group">
+                    <label for="bahan">🍳 Masukkan Bahan Utama:</label>
+                    <textarea name="bahan" id="bahan" placeholder="Contoh: Ayam, Nasi, Telur..."><?php echo htmlspecialchars($bahan); ?></textarea>
+                </div>
                 
-                <button type="submit" class="btn-share-trigger">
-                    📤 Bagikan ke WhatsApp / Instagram
+                <div class="input-group">
+                    <label for="image">📸 Atau Unggah Foto Bahan:</label>
+                    <input type="file" name="image" id="image" accept="image/*">
+                </div>
+
+                <button type="submit">
+                    <span>🪄</span> Generate Resep
                 </button>
             </form>
         </div>
-    <?php endif; ?>
-</div>
+        
+<?php if (!empty($resultText) && !in_array($resultText, ["Mohon isi bahan atau upload gambar.", "Resep akan muncul di sini setelah Anda mencari."])): ?>
+    <div class="card result-card show-animation">
+        <h2 class="card-title">Hasil Resep Kreatif</h2>
+        
+    <div class="recipe-output-rich">
+        <?php 
+        // Bersihkan format Markdown dasar
+        $text = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $resultText);
+        $text = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $text);
+        
+        $lines = explode("\n", $text);
+        $inAccordion = false;
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (empty($line) || $line == '---' || $line == '.') continue;
+
+            // 1. JUDUL UTAMA (##) -> Rata Kiri & Pink
+            if (strpos($line, '##') === 0) {
+                if ($inAccordion) { echo "</div></details>"; $inAccordion = false; }
+                $displayTitle = trim(str_replace('##', '', $line));
+                echo "<h3 class='recipe-main-title'>" . $displayTitle . "</h3>";
+                continue;
+            }
+
+            // 2. DETEKSI HEADER DROPDOWN (Penting: Mendeteksi ### atau I. II. III.)
+            // Mencari baris yang diawali ### atau angka Romawi (I., II., III., IV.)
+            if (strpos($line, '###') === 0 || preg_match('/^(I|II|III|IV|V)\./i', strip_tags($line))) {
+                
+                if ($inAccordion) echo "</div></details>";
+                
+                // Bersihkan teks dari simbol pagar untuk judul
+                $sectionTitle = trim(str_replace('###', '', $line));
+                
+                echo "<details class='recipe-accordion' open>
+                        <summary>" . $sectionTitle . " <span class='arrow-icon'>▲</span></summary>
+                        <div class='accordion-content'>";
+                $inAccordion = true;
+                continue;
+            }
+
+            // 3. ISI LIST (Poin) -> Kotak Kuning Kecil
+            if (strpos($line, '*') === 0 || strpos($line, '-') === 0 || preg_match('/^\d+\./', $line) || strpos($line, '•') === 0) {
+                $cleanItem = ltrim($line, '*-•0123456789. ');
+                echo "<div class='recipe-list-item'><span class='yellow-box'></span> " . $cleanItem . "</div>";
+            } 
+            // 4. TEKS BIASA
+            else {
+                echo "<p class='recipe-text'>" . $line . "</p>";
+            }
+        }
+
+        if ($inAccordion) echo "</div></details>";
+        ?>
+    </div>
+
+    <div class="share-section">
+            <form action="share.php" method="POST">
+                <input type="hidden" name="resep" value="<?php echo htmlspecialchars($resultText); ?>">
+                <button type="submit" class="btn-share-trigger">📤 Bagikan Resep</button>
+            </form>
+        </div>
+    </div>
+<?php endif; ?>
