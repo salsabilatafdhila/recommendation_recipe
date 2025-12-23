@@ -28,26 +28,50 @@ body {
     min-height: 100vh;
 }
 
+/* Pastikan Wrapper Utama bersih dari padding samping yang mengganggu */
 .main-wrapper {
     width: 100%;
-    max-width: 1200px; /* Tampilan lebar */
-    padding: 0 20px 20px 20px; /* Padding di sekitar konten utama */
+    max-width: 1200px; 
+    margin: 0 auto; /* Menengahkan seluruh konten */
+    padding: 0;     /* Hapus padding samping agar sejajar dengan navbar */
 }
 
-/* --- Navigasi ala Pinterest --- */
+/* Navbar: Hilangkan margin negatif agar sejajar dengan container di bawahnya */
 .navbar {
-    background-color: var(--text-light); /* Navbar putih */
-    padding: 15px 30px; /* Padding lebih besar */
-    border-bottom: 1px solid #eee; /* Garis bawah halus */
-    margin: 0 -20px 30px -20px; /* Menutupi padding main-wrapper agar full width */
+    background-color: var(--text-light);
+    padding: 15px 30px;
+    border-bottom: 1px solid #eee;
+    margin: 0 0 30px 0; /* Margin negatif dihapus agar lurus */
     box-shadow: var(--shadow-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky; /* Sticky navbar */
+    position: sticky;
     top: 0;
     z-index: 1000;
-    border-radius: 0 0 15px 15px; /* Sedikit rounded di bawah */
+    border-radius: 0 0 15px 15px;
+}
+
+/* Container Resep: Samakan dengan lebar navbar */
+.recipe-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px; /* Samakan dengan max-width main-wrapper */
+    margin: 0 auto 50px auto;
+    padding: 0 20px; /* Berikan sedikit ruang agar tidak menempel ke pinggir layar pada mobile */
+    box-sizing: border-box;
+}
+
+/* Card: Pastikan mengambil 100% dari container */
+.card {
+    background-color: var(--text-light);
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium);
+    padding: 30px;
+    width: 100%; 
+    box-sizing: border-box;
 }
 
 .navbar-brand {
@@ -85,6 +109,75 @@ body {
     font-weight: 800;
     font-size: 2.8em;
     letter-spacing: 1px;
+}
+/* Container Utama: Menyesuaikan dengan lebar Navbar (1200px) */
+.recipe-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    /* Nilai ini disamakan dengan max-width .main-wrapper agar sejajar navbar */
+    max-width: 1200px; 
+    margin: 0 auto 50px auto;
+}
+
+/* Card: Mengambil lebar penuh kontainer */
+.card {
+    background-color: var(--text-light);
+    border-radius: 20px;
+    box-shadow: var(--shadow-medium);
+    padding: 40px; /* Padding diperbesar agar proporsional dengan card yang lebar */
+    width: 100%; 
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Pastikan elemen form juga melebar secara estetis */
+textarea {
+    width: 100%;
+    min-height: 150px; /* Sedikit lebih tinggi untuk area yang lebih lebar */
+    padding: 15px;
+    font-size: 1.1em;
+}
+
+/* Animasi Muncul Halus */
+.show-animation {
+    animation: smoothAppear 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes smoothAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mempercantik tampilan teks resep */
+.recipe-output {
+    background-color: var(--pink-bg);
+    padding: 25px;
+    border-radius: 15px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05em;
+    line-height: 1.8;
+    color: var(--text-dark);
+    border: 1px solid var(--pink-light);
+}
+
+/* Memperbaiki tampilan tombol di mobile agar tetap simetris */
+@media (max-width: 768px) {
+    .recipe-container {
+        padding: 0 10px;
+    }
+    .card {
+        padding: 20px;
+    }
 }
 
 /* ---------------------------------------------------- */
@@ -565,4 +658,115 @@ details[open] summary .arrow {
     color: var(--accent-yellow); /* Warna Kuning Emas */
     font-size: 1.1em;
     letter-spacing: 2px;
+}
+/* Judul Pink Rata Kiri */
+.recipe-main-title {
+    text-align: left;
+    font-size: 1.25em;
+    color: var(--pink-dark);
+    margin: 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px dashed var(--pink-light);
+    font-weight: 800;
+}
+
+/* Kotak Dropdown (Accordion) */
+.recipe-accordion {
+    margin-bottom: 15px;
+    border: 1px solid var(--pink-light);
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.recipe-accordion summary {
+    padding: 15px 20px;
+    list-style: none;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--pink-dark);
+    display: flex;
+    justify-content: space-between; /* Menaruh panah di kanan */
+    align-items: center;
+    background-color: #fffafb;
+}
+
+.recipe-accordion summary::-webkit-details-marker {
+    display: none; /* Hilangkan panah default chrome */
+}
+
+/* Kotak Kuning Kecil */
+.recipe-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.yellow-box {
+    width: 8px;
+    height: 8px;
+    background-color: #FFC72C; /* Kuning Emas */
+    margin-top: 6px;
+    flex-shrink: 0;
+    border-radius: 2px;
+}
+
+/* Panah di sisi kanan */
+.arrow-icon {
+    font-size: 0.8em;
+    transition: transform 0.3s;
+    color: var(--pink-dark);
+}
+
+.recipe-accordion[open] .arrow-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+/* List Item dan Teks Biasa */
+.recipe-list-item {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #555;
+    padding-left: 5px;
+    display: block; /* Memastikan tidak berantakan */
+}
+
+.recipe-text {
+    margin-bottom: 15px;
+    line-height: 1.7;
+    color: #444;
+}
+
+/* Panah Indikator */
+.arrow {
+    font-size: 0.7em;
+    transition: transform 0.3s;
+}
+
+.recipe-accordion[open] .arrow {
+    transform: rotate(180deg);
+}
+.accordion-content {
+    padding: 15px 20px;
+    border-top: 1px solid var(--pink-light);
+    animation: slideDown 0.4s ease-out;
+}
+
+/* Item di dalam list */
+.recipe-list-item {
+    margin: 8px 0;
+    padding-left: 10px;
+    border-left: 3px solid var(--pink-light);
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
