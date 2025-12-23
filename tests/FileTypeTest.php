@@ -4,17 +4,45 @@ use PHPUnit\Framework\TestCase;
 class FileTypeTest extends TestCase
 {
     // 1. Test Case: File Exist 
-    public function testFileIndexExists()
-    {
+    public function testFileIndexExists(){
         $this->assertFileExists('index.php', "File index.php harus ada");
     }
+        public function testFileAboutExists() {
+        $this->assertFileExists('about.php', "File about.php harus ada");
+    }
+        public function testFileFaqExists() {
+        $this->assertFileExists('faq.php', "File faq.php harus ada");
+    }
+        public function testFileProfileExists() {
+        $this->assertFileExists('profile.php', "File profile.php harus ada");
+    }
+        public function testFileShareExists() {
+        $this->assertFileExists('share.php', "File share.php harus ada");
+    }
 
-    // 2. Test Case: Valid Syntax 
-    public function testIndexSyntax()
+    // 2. Test Case: Valid Syntax untuk SEMUA file PHP
+    public function testAllPhpFilesSyntax()
     {
-        // Mengecek sintaks PHP menggunakan command line linter
-        $output = shell_exec('php -l index.php');
-        $this->assertStringContainsString('No syntax errors', $output, "Sintaks PHP error");
+        // Tentukan direktori yang ingin dicek (titik '.' berarti direktori saat ini)
+        $directory = new RecursiveDirectoryIterator('.');
+        $iterator = new RecursiveIteratorIterator($directory);
+        
+        foreach ($iterator as $file) {
+            // Hanya cek file dengan ekstensi .php dan abaikan folder vendor (jika ada)
+            if ($file->isFile() && $file->getExtension() === 'php' && !str_contains($file->getPathname(), 'vendor')) {
+                $filePath = $file->getPathname();
+                
+                // Menjalankan command line linter: php -l path/to/file.php
+                $output = shell_exec("php -l \"$filePath\" 2>&1");
+                
+                // Memastikan output mengandung 'No syntax errors'
+                $this->assertStringContainsString(
+                    'No syntax errors', 
+                    $output, 
+                    "Kesalahan sintaks ditemukan pada file: $filePath\nOutput: $output"
+                );
+            }
+        }
     }
 
     // 3. Test Case: API Key tidak boleh kosong 
